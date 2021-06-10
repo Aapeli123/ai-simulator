@@ -118,6 +118,8 @@ public class AIRobotAgent : Agent
         float laggedAction = m_ActionLagBuffer.GetAction();
 
         AddReward(-1f / MaxStep);
+        
+        
         MoveAgent(laggedAction);
     }
     /// <summary>

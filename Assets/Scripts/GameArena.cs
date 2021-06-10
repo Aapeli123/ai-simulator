@@ -11,6 +11,7 @@ public class EnergyCore
     public GameObject coreGO;
     public Rigidbody coreRb;
     public EnergyCoreController.CoreShape coreShape;
+    public EnergyCoreController Controller;
 }
 
 public class AIRobot
@@ -68,6 +69,7 @@ public class GameArena : MonoBehaviour
     #region ======= PRIVATE VARIABLES =======
     List<AIRobot> m_BlueAgents = new List<AIRobot>();
     List<AIRobot> m_RedAgents = new List<AIRobot>();
+    
     List<EnergyCore> m_PosEnergyCores = new List<EnergyCore>();
     List<EnergyCore> m_NegEnergyCores = new List<EnergyCore>();
     /// <summary>
@@ -77,6 +79,8 @@ public class GameArena : MonoBehaviour
     Material m_GroundMaterial;
     GameObject m_Ground;
     EnvironmentParameters m_ResetParams;
+    EnvironmentParameters m_RewardParams;
+
     AIRobotSettings m_AIRobotSettings;
     Bounds m_AreaBounds;
     int currentLevel = -1;
@@ -107,6 +111,7 @@ public class GameArena : MonoBehaviour
     {
         m_AIRobotSettings = FindObjectOfType<AIRobotSettings>();
         m_ResetParams = Academy.Instance.EnvironmentParameters;
+        m_RewardParams = Academy.Instance.EnvironmentParameters;
         
         OnEpisodeBegin();
     }
@@ -130,6 +135,46 @@ public class GameArena : MonoBehaviour
 
 
     #region ======= PUBLIC FUNCTIONS =======
+
+    public void FixedUpdate()
+    {
+        float positiveDistMultiplier = m_RewardParams.GetWithDefault("positive_dist_to_goal", 0f);
+        float negativeDistMultiplier = m_RewardParams.GetWithDefault("negative_dist_to_goal", 0f);
+
+        foreach (var posEnergyCore in m_PosEnergyCores)
+        {
+            
+            if(float.IsInfinity(posEnergyCore.Controller.distanceToNearestBlue) || float.IsInfinity(posEnergyCore.Controller.distanceToNearestRed)) {
+                continue;
+            }
+
+            foreach (var blueAgent in m_BlueAgents)
+            {
+                
+                blueAgent.robotScript.AddReward(positiveDistMultiplier * (posEnergyCore.Controller.distanceToNearestRed - posEnergyCore.Controller.distanceToNearestBlue));
+            }
+            foreach (var redAgent in m_RedAgents)
+            {
+                redAgent.robotScript.AddReward(positiveDistMultiplier * (posEnergyCore.Controller.distanceToNearestBlue - posEnergyCore.Controller.distanceToNearestRed));
+            }
+        }
+        
+        foreach (var negEnergyCore in m_NegEnergyCores)
+        {
+            if(float.IsInfinity(negEnergyCore.Controller.distanceToNearestBlue) || float.IsInfinity(negEnergyCore.Controller.distanceToNearestRed)) {
+                continue;
+            }
+            foreach (var blueAgent in m_BlueAgents)
+            {
+                blueAgent.robotScript.AddReward(negativeDistMultiplier * (negEnergyCore.Controller.distanceToNearestRed - negEnergyCore.Controller.distanceToNearestBlue));
+            }
+            foreach (var redAgent in m_RedAgents)
+            {
+                redAgent.robotScript.AddReward(negativeDistMultiplier * (negEnergyCore.Controller.distanceToNearestBlue - negEnergyCore.Controller.distanceToNearestRed));
+            }
+        }
+    }
+
     public void OnEpisodeBegin()
     {
         resetCounter++;
@@ -353,6 +398,7 @@ public class GameArena : MonoBehaviour
                 var core = new EnergyCore();
                 core.coreGO = go;
                 core.coreRb = go.GetComponent<Rigidbody>();
+                core.Controller = go.GetComponent<EnergyCoreController>();
                 list.Add(core);
             }
         }

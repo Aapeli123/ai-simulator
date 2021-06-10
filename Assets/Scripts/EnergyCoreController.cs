@@ -27,6 +27,7 @@ public class EnergyCoreController : MonoBehaviour
     public string blueGoalTag; //will be used to check if collided with blue goal
 
     void Awake()
+    
     {
         arena = transform.parent.GetComponent<GameArena>();
     }
@@ -51,7 +52,7 @@ public class EnergyCoreController : MonoBehaviour
         {
             Vector3 curPos = transform.position;
             Vector3 pos = redGoal.transform.position;
-            var distance = Vector3.Distance(curPos, pos);
+            var distance = Vector3.Distance(curPos.normalized, pos.normalized);
             if (min > distance)
             {
                 min = distance;
