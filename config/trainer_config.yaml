@@ -2,7 +2,7 @@ behaviors:
   AIRobotGeneric:
     trainer_type: ppo
     hyperparameters:
-      batch_size: 128
+      batch_size: 256
       buffer_size: 2048
       learning_rate: 0.0003
       beta: 0.01
@@ -42,7 +42,7 @@ environment_parameters:
         signal_smoothing: true
         min_lesson_length: 100
         threshold: 3.5
-      value: 2500
+      value: 2000
     - name: LessonPushBlockTwoGoals
       completion_criteria: &lessonpushblock2_defaults
         measure: reward
@@ -50,7 +50,7 @@ environment_parameters:
         signal_smoothing: true
         min_lesson_length: 100
         threshold: 7
-      value: 2500
+      value: 2000
     - name: LessonPushBlockTwoGoalsWithBall
       completion_criteria: &lessonpushblock2ball_defaults
         measure: reward
@@ -155,10 +155,10 @@ environment_parameters:
     curriculum:
       - name: LessonPushBlock
         completion_criteria: *lessonpushblock_defaults
-        value: 0
+        value: 1
       - name: LessonPushBlockTwoGoals
         completion_criteria: *lessonpushblock2_defaults
-        value: 0
+        value: 1
       - name: LessonPushBlockTwoGoalsWithBall
         completion_criteria: *lessonpushblock2ball_defaults
         value: 1
@@ -190,7 +190,7 @@ environment_parameters:
     curriculum:
     - name: LessonPushBlock
       completion_criteria: *lessonpushblock_defaults
-      value: 4
+      value: 3
     - name: LessonPushBlockTwoGoals
       completion_criteria: *lessonpushblock2_defaults
       value: 3
@@ -362,6 +362,12 @@ environment_parameters:
       value: 2
   number_of_positive_energy_cores:
     curriculum:
+    - name: LessonPushBlock
+      completion_criteria: *lessonpushblock_defaults
+      value: 0
+    - name: LessonPushBlockTwoGoalsWithBall
+      completion_criteria: *lessonpushblock2ball_defaults
+      value: 1
     - name: Lesson0
       completion_criteria: *lesson0_defaults
       value: 1
@@ -389,13 +395,10 @@ environment_parameters:
     curriculum:
     - name: LessonPushBlock
       completion_criteria: *lessonpushblock_defaults
-      value: 0
-    - name: LessonPushBlockTwoGoals
-      completion_criteria: *lessonpushblock2_defaults
       value: 1
     - name: LessonPushBlockTwoGoalsWithBall
       completion_criteria: *lessonpushblock2ball_defaults
-      value: 1
+      value: 0
     - name: Lesson0
       completion_criteria: *lesson0_defaults
       value: 1

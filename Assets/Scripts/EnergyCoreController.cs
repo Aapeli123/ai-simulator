@@ -1,4 +1,5 @@
 
+using System;
 using UnityEngine;
 
 public class EnergyCoreController : MonoBehaviour
@@ -15,6 +16,9 @@ public class EnergyCoreController : MonoBehaviour
         Positive = 1
     }
 
+    public float distanceToNearestRed = float.PositiveInfinity;
+    public float distanceToNearestBlue = float.PositiveInfinity;
+    
     [HideInInspector]
     public GameArena arena;
     public CoreType m_CoreType;
@@ -35,6 +39,39 @@ public class EnergyCoreController : MonoBehaviour
         {
             transform.position = arena.GetRandomSpawnPosInArena();
         }
+    }
+
+    private void FixedUpdate()
+    {
+        var redGoals = GameObject.FindGameObjectsWithTag(redGoalTag);
+        var blueGoals = GameObject.FindGameObjectsWithTag(blueGoalTag);
+
+        float min = float.PositiveInfinity;
+        foreach (var redGoal in redGoals)
+        {
+            Vector3 curPos = transform.position;
+            Vector3 pos = redGoal.transform.position;
+            var distance = Vector3.Distance(curPos, pos);
+            if (min > distance)
+            {
+                min = distance;
+            }
+        }
+
+        distanceToNearestRed = min;
+        min = float.PositiveInfinity;
+        foreach (var blueGoal in blueGoals)
+        {
+            Vector3 curPos = transform.position;
+            Vector3 pos = blueGoal.transform.position;
+            var distance = Vector3.Distance(curPos, pos);
+            if (min > distance)
+            {
+                min = distance;
+            }
+        }
+
+        distanceToNearestBlue = min;
     }
 
     void OnCollisionEnter(Collision col)

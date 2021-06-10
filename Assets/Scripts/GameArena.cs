@@ -62,6 +62,9 @@ public class GameArena : MonoBehaviour
     #endregion // ======= END PUBLIC VARIABLES =======
 
 
+    public GameObject redGoal;
+    public GameObject blueGoal;
+
     #region ======= PRIVATE VARIABLES =======
     List<AIRobot> m_BlueAgents = new List<AIRobot>();
     List<AIRobot> m_RedAgents = new List<AIRobot>();
@@ -104,12 +107,15 @@ public class GameArena : MonoBehaviour
     {
         m_AIRobotSettings = FindObjectOfType<AIRobotSettings>();
         m_ResetParams = Academy.Instance.EnvironmentParameters;
-
+        
         OnEpisodeBegin();
     }
+    
 
     void Update()
     {
+        
+        
         if (m_RewardText != null && m_RewardText.IsActive() == true)
         {
             m_RewardText.text = "Reward: " + String.Format("{0:0.000}", m_BlueAgents[0].robotScript.GetCumulativeReward());

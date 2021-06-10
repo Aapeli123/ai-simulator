@@ -3370,6 +3370,8 @@ MonoBehaviour:
   m_EndEpisodeOnNegRewardIfSingleAgent: 0
   m_AgentSpeedRandomFactor: 1
   m_RotationSpeedRandomFactor: 1
+  redGoal: {fileID: 0}
+  blueGoal: {fileID: 0}
 --- !u!1 &7530373356775786342
 GameObject:
   m_ObjectHideFlags: 0
