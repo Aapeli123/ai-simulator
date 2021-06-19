@@ -36,47 +36,40 @@ environment_parameters:
 
   max_steps:
     curriculum:
-    - name: Lesson0
-      completion_criteria: &lesson0_defaults
+    - name: first_purple
+      completion_criteria: &first_purple_defaults
         measure: reward
         behavior: AIRobotGeneric
         signal_smoothing: true
         min_lesson_length: 100
         threshold: 3.5
-      value: 2000
-    - name: Lesson1
-      completion_criteria: &lesson1_defaults
+      value: 3500
+    - name: first_yellow
+      completion_criteria: &first_yellow_defaults
+        measure: reward
+        behavior: AIRobotGeneric
+        signal_smoothing: true
+        min_lesson_length: 100
+        threshold: 3.5
+      value: 3500
+
+    - name: second_purple
+      completion_criteria: &second_purple_defaults
         measure: reward
         behavior: AIRobotGeneric
         signal_smoothing: true
         min_lesson_length: 100
         threshold: 7
       value: 2000
-    - name: Lesson2
-      completion_criteria: &lesson2_defaults
+    - name: second_yellow
+      completion_criteria: &second_yellow_defaults
         measure: reward
         behavior: AIRobotGeneric
         signal_smoothing: true
         min_lesson_length: 100
-        threshold: 9
-      value: 2500
-    - name: Lesson3
-      completion_criteria: &lesson3_defaults
-        measure: reward
-        behavior: AIRobotGeneric
-        signal_smoothing: true
-        min_lesson_length: 100
-        threshold: 3.5
-        require_reset: true
-      value: 2500
-    - name: Lesson4
-      completion_criteria: &lesson4_defaults
-        measure: reward
-        behavior: AIRobotGeneric
-        signal_smoothing: true
-        min_lesson_length: 100
-        threshold: 5
-      value: 2300
+        threshold: 7
+      value: 2000
+
     - name: Lesson5
       completion_criteria: &lesson5_defaults
         measure: reward
@@ -119,41 +112,23 @@ environment_parameters:
       value: 2000
     - name: Lesson10
       value: 2000
-
-
-  positive_dist_to_goal:
-    curriculum:
-      - name: Lesson0
-        completion_criteria: *lesson0_defaults
-        value: 0.001
-      - name: Lesson1
-        completion_criteria: *lesson1_defaults
-        value: 0.001
-
-  negative_dist_to_goal:
-    curriculum:
-      - name: Lesson0
-        completion_criteria: *lesson0_defaults
-        value: -0.001
-      - name: Lesson1
-        completion_criteria: *lesson1_defaults
-        value: -0.001
-
   
   max_arenas:
     curriculum:
-      - name: Lesson0
-        completion_criteria: *lesson0_defaults
+      - name: first_purple
+        completion_criteria: *first_purple_defaults
+        value: 128
+      - name: first_yellow
+        completion_criteria: *first_yellow_defaults
+        value: 128
+
+      - name: Second_Purple
         value: 64
-      - name: Lesson1
-        completion_criteria: *lesson1_defaults
+        completion_criteria: *second_purple_defaults
+      - name: Second_Yellow
         value: 64
-      - name: Lesson3
-        value: 16
-        completion_criteria: *lesson3_defaults
-      - name: Lesson4
-        value: 16
-        completion_criteria: *lesson4_defaults
+        completion_criteria: *second_yellow_defaults
+
       - name: Lesson5
         value: 16
         completion_criteria: *lesson5_defaults
@@ -174,21 +149,20 @@ environment_parameters:
 
   ball_shape:
     curriculum:
-      - name: Lesson0
-        completion_criteria: *lesson0_defaults
+      - name: first_purple
+        value: 0
+        completion_criteria: *first_purple_defaults
+      - name: first_yellow
+        value: 0
+        completion_criteria: *first_yellow_defaults
+
+      - name: second_purple
         value: 1
-      - name: Lesson1
-        completion_criteria: *lesson1_defaults
+        completion_criteria: *second_purple_defaults
+      - name: second_yellow
         value: 1
-      - name: Lesson2
-        completion_criteria: *lesson2_defaults
-        value: 1
-      - name: Lesson3
-        completion_criteria: *lesson3_defaults
-        value: 1
-      - name: Lesson4
-        completion_criteria: *lesson4_defaults
-        value: 1
+        completion_criteria: *second_yellow_defaults
+
       - name: Lesson5
         completion_criteria: *lesson5_defaults
         value: 1
@@ -209,21 +183,20 @@ environment_parameters:
 
   level:
     curriculum:
-    - name: Lesson0
-      completion_criteria: *lesson0_defaults
+    - name: first_purple
+      completion_criteria: *first_purple_defaults
       value: 3
-    - name: Lesson1
-      completion_criteria: *lesson1_defaults
+    - name: first_yellow
+      completion_criteria: *first_yellow_defaults
       value: 3
-    - name: Lesson1
-      completion_criteria: *lesson1_defaults
-      value: 3
-    - name: Lesson3
-      completion_criteria: *lesson3_defaults
-      value: 3
-    - name: Lesson4
-      completion_criteria: *lesson4_defaults
-      value: 3
+
+    - name: second_purple
+      completion_criteria: *second_purple_defaults
+      value: 2
+    - name: second_yellow
+      completion_criteria: *second_yellow_defaults
+      value: 2
+
     - name: Lesson5
       completion_criteria: *lesson5_defaults
       value: 2
@@ -241,20 +214,23 @@ environment_parameters:
       value: 1
     - name: Lesson10
       value: 1
+
   spawn_area_margin:
     curriculum:
-    - name: Lesson0
-      completion_criteria: *lesson0_defaults
+    - name: first_purple
+      completion_criteria: *first_purple_defaults
       value: 0.5
-    - name: Lesson1
-      completion_criteria: *lesson1_defaults
+    - name: first_yellow
+      completion_criteria: *first_yellow_defaults
       value: 0.5
-    - name: Lesson3
-      completion_criteria: *lesson3_defaults
-      value: 0.5
-    - name: Lesson4
-      completion_criteria: *lesson4_defaults
+
+    - name: second_purple
+      completion_criteria: *second_purple_defaults
       value: 0.7
+    - name: second_yellow
+      completion_criteria: *second_yellow_defaults
+      value: 0.7
+
     - name: Lesson5
       completion_criteria: *lesson5_defaults
       value: 0.8
@@ -272,14 +248,24 @@ environment_parameters:
       value: 0.99
     - name: Lesson10
       value: 0.99
+
   random_obs_dist:
     curriculum:
-    - name: Lesson3
-      completion_criteria: *lesson3_defaults
+    - name: first_purple
+      completion_criteria: *first_purple_defaults
       value: 0.0
-    - name: Lesson4
-      completion_criteria: *lesson4_defaults
+    - name: first_yellow
+      completion_criteria: *first_yellow_defaults
+      value: 0.0
+
+    - name: second_purple
+      completion_criteria: *second_purple_defaults
       value: 0.01
+    - name: second_yellow
+      completion_criteria: *second_yellow_defaults
+      value: 0.01
+
+
     - name: Lesson5
       completion_criteria: *lesson5_defaults
       value: 0.01
@@ -297,14 +283,23 @@ environment_parameters:
       value: 0.02
     - name: Lesson10
       value: 0.02
+
   random_obs_angle:
     curriculum:
-    - name: Lesson3
-      completion_criteria: *lesson3_defaults
+    - name: first_purple
+      completion_criteria: *first_purple_defaults
       value: 0
-    - name: Lesson4
-      completion_criteria: *lesson4_defaults
-      value: 1
+    - name: first_yellow
+      completion_criteria: *first_yellow_defaults
+      value: 0
+
+    - name: second_yellow
+      completion_criteria: *second_yellow_defaults
+      value: 0
+    - name: second_purple
+      completion_criteria: *second_purple_defaults
+      value: 0
+
     - name: Lesson5
       completion_criteria: *lesson5_defaults
       value: 2
@@ -322,14 +317,23 @@ environment_parameters:
       value: 2
     - name: Lesson10
       value: 2
+
   number_of_blue_agents:
     curriculum:
-    - name: Lesson3
-      completion_criteria: *lesson3_defaults
+    - name: first_purple
+      completion_criteria: *first_purple_defaults
       value: 1
-    - name: Lesson4
-      completion_criteria: *lesson4_defaults
+    - name: first_yellow
+      completion_criteria: *first_yellow_defaults
       value: 1
+
+    - name: second_purple
+      completion_criteria: *second_purple_defaults
+      value: 1  
+    - name: second_yellow
+      completion_criteria: *second_yellow_defaults
+      value: 1
+ 
     - name: Lesson5
       completion_criteria: *lesson5_defaults
       value: 2
@@ -347,23 +351,23 @@ environment_parameters:
       value: 2
     - name: Lesson10
       value: 2
+
   number_of_red_agents:
     curriculum:
-    - name: Lesson0
-      completion_criteria: *lesson0_defaults
+    - name: first_purple
       value: 0
-    - name: Lesson1
-      completion_criteria: *lesson1_defaults
+      completion_criteria: *first_purple_defaults
+    - name: first_yellow
       value: 0
-    - name: Lesson2
-      completion_criteria: *lesson2_defaults
+      completion_criteria: *first_yellow_defaults
+
+    - name: first_yellow
       value: 0
-    - name: Lesson3
-      completion_criteria: *lesson3_defaults
-      value: 1
-    - name: Lesson4
-      completion_criteria: *lesson4_defaults
-      value: 1
+      completion_criteria: *first_yellow_defaults
+    - name: second_yellow
+      value: 0
+      completion_criteria: *second_purple_defaults
+
     - name: Lesson5
       completion_criteria: *lesson5_defaults
       value: 2
@@ -381,20 +385,22 @@ environment_parameters:
       value: 2
     - name: Lesson10
       value: 2
+
   number_of_positive_energy_cores:
     curriculum:
-    - name: Lesson0
-      completion_criteria: *lesson0_defaults
+    - name: first_purple
+      completion_criteria: *first_purple_defaults
       value: 0
-    - name: Lesson2
-      completion_criteria: *lesson2_defaults
+    - name: first_yellow
+      completion_criteria: *first_yellow_defaults
       value: 1
-    - name: Lesson3
-      completion_criteria: *lesson3_defaults
+    - name: second_purple
+      completion_criteria: *second_purple_defaults
+      value: 0
+    - name: second_yellow
+      completion_criteria: *second_yellow_defaults
       value: 1
-    - name: Lesson4
-      completion_criteria: *lesson4_defaults
-      value: 1
+
     - name: Lesson5
       completion_criteria: *lesson5_defaults
       value: 2
@@ -412,20 +418,22 @@ environment_parameters:
       value: 4
     - name: Lesson10
       value: 5
+
   number_of_negative_energy_cores:
     curriculum:
-    - name: Lesson0
-      completion_criteria: *lesson0_defaults
+    - name: first_purple
+      completion_criteria: *first_purple_defaults
       value: 1
-    - name: Lesson2
-      completion_criteria: *lesson2_defaults
+    - name: first_yellow
+      completion_criteria: *first_yellow_defaults
+      value: 0
+    - name: second_purple
+      completion_criteria: *second_purple_defaults
       value: 1
-    - name: Lesson3
-      completion_criteria: *lesson3_defaults
-      value: 1
-    - name: Lesson4
-      completion_criteria: *lesson4_defaults
-      value: 1
+    - name: second_yellow
+      completion_criteria: *second_yellow_defaults
+      value: 0
+
     - name: Lesson5
       completion_criteria: *lesson5_defaults
       value: 2
