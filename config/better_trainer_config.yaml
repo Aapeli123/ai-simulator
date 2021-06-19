@@ -86,6 +86,7 @@ environment_parameters:
         signal_smoothing: true
         min_lesson_length: 100
         threshold: 8
+        require_reset: true
       value: 2000
     - name: 2b2b
       completion_criteria: &2b2b_defaults
@@ -94,6 +95,7 @@ environment_parameters:
         signal_smoothing: true
         min_lesson_length: 100
         threshold: 8
+        require_reset: true
       value: 2000
 
     - name: first_fight
@@ -103,6 +105,7 @@ environment_parameters:
         signal_smoothing: true
         min_lesson_length: 100
         threshold: 8
+        require_reset: true
       value: 2000
     - name: two_on_two
       completion_criteria: &two_on_two_defaults
@@ -111,6 +114,7 @@ environment_parameters:
         signal_smoothing: true
         min_lesson_length: 100
         threshold: 8
+        require_reset: true
       value: 2000
 
     - name: big_fight
@@ -120,6 +124,7 @@ environment_parameters:
         signal_smoothing: true
         min_lesson_length: 100
         threshold: 10
+        require_reset: true
       value: 3000
     - name: mega_fight
       completion_criteria: &mega_fight_defaults
@@ -128,6 +133,7 @@ environment_parameters:
         signal_smoothing: true
         min_lesson_length: 100
         threshold: 10
+        require_reset: true
       value: 3000
 
     - name: freeplay
