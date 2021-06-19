@@ -5,11 +5,11 @@ behaviors:
     hyperparameters:
       batch_size: 1024
       buffer_size: 10240
-      learning_rate: 0.0003
+      learning_rate: 0.0004
       beta: 0.01
       epsilon: 0.2
       lambd: 0.95
-      num_epoch: 7
+      num_epoch: 6
       learning_rate_schedule: linear
 
     network_settings: 
@@ -31,11 +31,11 @@ behaviors:
     threaded: true
 
     self_play:
-      window: 20
-      play_against_latest_model_ratio: 0.3
-      save_steps: 50000
-      team_change: 250000
-      swap_steps: 25000
+      window: 15
+      play_against_latest_model_ratio: 0.4
+      save_steps: 30000
+      team_change: 150000
+      swap_steps: 15000
 
 
 environment_parameters:
@@ -47,7 +47,7 @@ environment_parameters:
         behavior: AIRobotGeneric
         signal_smoothing: true
         min_lesson_length: 100
-        threshold: 3.5
+        threshold: 4
         require_reset: true
       value: 3000
     - name: first_yellow
@@ -56,7 +56,7 @@ environment_parameters:
         behavior: AIRobotGeneric
         signal_smoothing: true
         min_lesson_length: 100
-        threshold: 3.5
+        threshold: 4
         require_reset: true
       value: 3000
 
@@ -66,7 +66,7 @@ environment_parameters:
         behavior: AIRobotGeneric
         signal_smoothing: true
         min_lesson_length: 100
-        threshold: 5
+        threshold: 4.5
         require_reset: true
       value: 2000
     - name: second_yellow
@@ -75,7 +75,7 @@ environment_parameters:
         behavior: AIRobotGeneric
         signal_smoothing: true
         min_lesson_length: 100
-        threshold: 5
+        threshold: 4.5
         require_reset: true
       value: 2000
 
