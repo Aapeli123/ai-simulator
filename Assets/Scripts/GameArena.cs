@@ -91,8 +91,6 @@ public class GameArena : MonoBehaviour
     int negECoreHitsOpponentGoalReward;
     int negECoreHitsOwnGoalReward;
 
-    float currentTimeMultiplier;
-
     #endregion // ======= END PRIVATE VARIABLES =======
 
 
@@ -175,37 +173,6 @@ public class GameArena : MonoBehaviour
                 redAgent.robotScript.AddReward(negativeDistMultiplier * (negEnergyCore.Controller.distanceToNearestBlue - negEnergyCore.Controller.distanceToNearestRed));
             }
         }
-
-        float teamDistPenaltyThreshold  = m_RewardParams.GetWithDefault("team_dist_penalty_threshold", 0f);
-        float teamDistPenalty           = m_RewardParams.GetWithDefault("team_dist_penalty", 0f);
-
-        foreach (var blueAgent1 in m_BlueAgents)
-        {
-            foreach (var blueAgent2 in m_BlueAgents)
-            {
-                if (blueAgent1 != blueAgent2)
-                {
-                    float distance = Vector3.Distance (blueAgent1.transform.position, blueAgent2.transform.position);
-
-                    // Add penalty only one way since the inefficient checking will see the same relation from the other perspective aswell
-                    if (distance < teamDistPenaltyThreshold) blueAgent1.robotScript.AddReward(teamDistPenalty);
-                }
-            }
-        }
-
-        foreach (var redAgent1 in m_RedAgents)
-        {
-            foreach (var redAgent2 in m_RedAgents)
-            {
-                if (redAgent1 != redAgent2)
-                {
-                    float distance = Vector3.Distance (redAgent1.transform.position, redAgent2.transform.position);
-
-                    // Add penalty only one way since the inefficient checking will see the same relation from the other perspective aswell
-                    if (distance < teamDistPenaltyThreshold) redAgent1.robotScript.AddReward(teamDistPenalty);
-                }
-            }
-        }
     }
     public void OnEpisodeBegin()
     {
@@ -214,9 +181,8 @@ public class GameArena : MonoBehaviour
         // If called with forceInit, ignore this and initialize the game.
         if (resetCounter == 1)
         {
-            currentTimeMultiplier = 1.0f;
 
-            if (m_RewardParams.GetWithDefault("rotate_arena", true))
+            if (true)
             {
                 var rotation = UnityEngine.Random.Range(0, 4);
                 var rotationAngle = rotation * 90f;
