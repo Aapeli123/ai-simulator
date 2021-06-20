@@ -91,6 +91,8 @@ public class GameArena : MonoBehaviour
     int negECoreHitsOpponentGoalReward;
     int negECoreHitsOwnGoalReward;
 
+    float currentTimeMultiplier;
+
     #endregion // ======= END PRIVATE VARIABLES =======
 
 
@@ -173,8 +175,38 @@ public class GameArena : MonoBehaviour
                 redAgent.robotScript.AddReward(negativeDistMultiplier * (negEnergyCore.Controller.distanceToNearestBlue - negEnergyCore.Controller.distanceToNearestRed));
             }
         }
-    }
 
+        float teamDistPenaltyThreshold  = m_RewardParams.GetWithDefault("team_dist_penalty_threshold", 0f);
+        float teamDistPenalty           = m_RewardParams.GetWithDefault("team_dist_penalty", 0f);
+
+        foreach (var blueAgent1 in m_blueAgents)
+        {
+            foreach (var blueAgent2 in m_blueAgents)
+            {
+                if (blueAgent1 != blueAgent2)
+                {
+                    float distance = Vector3.Distance (blueAgent1.transform.position, blueAgent2.transform.position);
+
+                    // Add penalty only one way since the inefficient checking will see the same relation from the other perspective aswell
+                    if (distance < teamDistPenaltyThreshold) blueAgent1.robotScript.AddReward(teamDistPenalty);
+                }
+            }
+        }
+
+        foreach (var redAgent1 in m_redAgents)
+        {
+            foreach (var redAgent2 in m_redAgents)
+            {
+                if (redAgent1 != redAgent2)
+                {
+                    float distance = Vector3.Distance (redAgent1.transform.position, redAgent2.transform.position);
+
+                    // Add penalty only one way since the inefficient checking will see the same relation from the other perspective aswell
+                    if (distance < teamDistPenaltyThreshold) redAgent1.robotScript.AddReward(teamDistPenalty);
+                }
+            }
+        }
+    }
     public void OnEpisodeBegin()
     {
         resetCounter++;
@@ -182,7 +214,9 @@ public class GameArena : MonoBehaviour
         // If called with forceInit, ignore this and initialize the game.
         if (resetCounter == 1)
         {
-            if (m_RotateArenaOnEpisodeBegin)
+            currentTimeMultiplier = 1.0f;
+
+            if (m_RewardParams.GetWithDefault("rotate_arena", true))
             {
                 var rotation = UnityEngine.Random.Range(0, 4);
                 var rotationAngle = rotation * 90f;
@@ -262,14 +296,7 @@ public class GameArena : MonoBehaviour
         }
 
         var amountOfAgents = m_BlueAgents.Count + m_RedAgents.Count;
-        float EndEpisodeOnNegReward = m_ResetParams.GetWithDefault(
-            "end_episode_on_neg_reward_if_single_agent",
-            m_EndEpisodeOnNegRewardIfSingleAgent == true ? 1.0f : 0.0f);
-        if (amountOfAgents == 1 && EndEpisodeOnNegReward > 0)
-        {
-            if (m_BlueAgents.Count > 0 && rewards.blueReward < 0) EndEpisodeForAgents();
-            else if (m_RedAgents.Count > 0 && rewards.redReward < 0) EndEpisodeForAgents();
-        }
+
         // All energy cores have been put in goals. Reset arena.
         if (goalCounter >= (m_NegEnergyCores.Count + m_PosEnergyCores.Count))
         {
@@ -345,32 +372,29 @@ public class GameArena : MonoBehaviour
             "number_of_blue_agents",
             m_AIRobotSettings.numberOfBlueAgents);
 
-        int amountRedChanged = nRedAgents - m_RedAgents.Count;
-        int amountBlueChanged = nBlueAgents - m_BlueAgents.Count;
-        if (amountRedChanged != 0)
-        {
-            InitializeAgents(m_RedRobotPrefab, m_RedAgents, amountRedChanged);
-        }
-        if (amountBlueChanged != 0)
-        {
-            InitializeAgents(m_BlueRobotPrefab, m_BlueAgents, amountBlueChanged);
-        }
+            InitializeAgents(m_RedRobotPrefab, m_RedAgents, nRedAgents);
+            InitializeAgents(m_BlueRobotPrefab, m_BlueAgents, nBlueAgents);
     }
 
-    void InitializeAgents(GameObject agentPrefab, List<AIRobot> list, int amountChanged)
+    void InitializeAgents(GameObject agentPrefab, List<AIRobot> list, int amount)
     {
-        if (amountChanged < 0)
+        bool amountChanged = list.Count != amount;
+        if (amount < 0)
         {   
             Debug.Log("Amount of new agents: " + amountChanged);
             throw new Exception("Cannot remove Agents. Not implemented yet");
         }
-        for (int i = 0; i < amountChanged; i++)
+        if (amountChanged)
         {
-            var randomRotY = UnityEngine.Random.Range(-180f, 180f);
-            var randomRotQuat = Quaternion.Euler(new Vector3(0, randomRotY, 0));
-            var agentGO = GameObject.Instantiate(agentPrefab, GetRandomSpawnPosInArena(), randomRotQuat, transform);
-            var agent = new AIRobot(){robotGO = agentGO, robotScript = agentGO.GetComponent<AIRobotAgent>()};
-            list.Add(agent);
+            list.Clear();
+            for (int i = 0; i < amount; i++)
+            {
+                var randomRotY = UnityEngine.Random.Range(-180f, 180f);
+                var randomRotQuat = Quaternion.Euler(new Vector3(0, randomRotY, 0));
+                var agentGO = GameObject.Instantiate(agentPrefab, GetRandomSpawnPosInArena(), randomRotQuat, transform);
+                var agent = new AIRobot(){robotGO = agentGO, robotScript = agentGO.GetComponent<AIRobotAgent>()};
+                list.Add(agent);
+            }
         }
     }
     /// <summary>
