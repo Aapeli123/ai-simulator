@@ -179,9 +179,9 @@ public class GameArena : MonoBehaviour
         float teamDistPenaltyThreshold  = m_RewardParams.GetWithDefault("team_dist_penalty_threshold", 0f);
         float teamDistPenalty           = m_RewardParams.GetWithDefault("team_dist_penalty", 0f);
 
-        foreach (var blueAgent1 in m_blueAgents)
+        foreach (var blueAgent1 in m_BlueAgents)
         {
-            foreach (var blueAgent2 in m_blueAgents)
+            foreach (var blueAgent2 in m_BlueAgents)
             {
                 if (blueAgent1 != blueAgent2)
                 {
@@ -193,9 +193,9 @@ public class GameArena : MonoBehaviour
             }
         }
 
-        foreach (var redAgent1 in m_redAgents)
+        foreach (var redAgent1 in m_RedAgents)
         {
-            foreach (var redAgent2 in m_redAgents)
+            foreach (var redAgent2 in m_RedAgents)
             {
                 if (redAgent1 != redAgent2)
                 {

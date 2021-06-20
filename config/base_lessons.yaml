@@ -78,7 +78,7 @@ environment_parameters:
         behavior: AIRobotGeneric
         signal_smoothing: true
         min_lesson_length: 100
-        threshold: 8
+        threshold: 6
         require_reset: true
       value: 2000
     - name: 2b2b
@@ -87,7 +87,7 @@ environment_parameters:
         behavior: AIRobotGeneric
         signal_smoothing: true
         min_lesson_length: 100
-        threshold: 9
+        threshold: 8
         require_reset: true
       value: 2000
 
